@@ -75,6 +75,4 @@ def extract_rank(type=0):
         blocks.append(block)
     send_slack("#musicchart",blocks=blocks)
     driver.quit()
-
-
 extract_rank(0)
