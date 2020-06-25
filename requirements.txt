@@ -2,4 +2,4 @@ beautifulsoup4>=4.8.0
 python-dotenv>=0.13.0
 selenium>=3.141.0
 slackclient>=2.7.2
-
+requests>=2.22.0 
