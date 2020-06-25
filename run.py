@@ -20,9 +20,9 @@ driver = webdriver.Chrome("chromedriver",options=options)
 driver.implicitly_wait(3)
 
 def send_slack(blocks):
-    payload={"blocks":blocks[:21]}
-    requests.post(url=getWebHooks(),
-    data=json.dumps(payload),headers={"Content-Type":"application-json"})
+    payload,url={"blocks":blocks[:21]},getWebHooks()
+    print(url)
+    requests.post(url=url,data=json.dumps(payload),headers={"Content-Type":"application-json"})
     #slack.chat_postMessage(channel=channel_name,blocks=blocks[:21])
 def extract_rank(type=0):
     url,date,title="","",""
