@@ -39,5 +39,5 @@ jobs:
       run: 
           python run.py
       env:
-         SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
+         SLACK_TOKEN: ${{secrets.WEBHOOKS}}
  
