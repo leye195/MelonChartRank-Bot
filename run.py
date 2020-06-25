@@ -1,11 +1,11 @@
 
-from slack import WebClient 
+import re
+import json
 from selenium import webdriver
 from bs4 import BeautifulSoup
-import re
-from settings import getToken
-
-slack = WebClient(getToken())
+import requests
+from settings import getWebHooks
+from slack import WebhookClient
 
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
@@ -19,9 +19,11 @@ options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)
 driver = webdriver.Chrome("chromedriver",options=options)
 driver.implicitly_wait(3)
 
-def send_slack(channel_name,blocks):
-    slack.chat_postMessage(channel=channel_name,blocks=blocks[:21])
-
+def send_slack(blocks):
+    payload={"blocks":blocks[:21]}
+    requests.post(url=getWebHooks(),
+    data=json.dumps(payload),headers={"Content-Type":"application-json"})
+    #slack.chat_postMessage(channel=channel_name,blocks=blocks[:21])
 def extract_rank(type=0):
     url,date,title="","",""
     if(type==0):
@@ -73,6 +75,11 @@ def extract_rank(type=0):
            }
         }
         blocks.append(block)
-    send_slack("#musicchart",blocks=blocks)
+    send_slack(blocks)
     driver.quit()
-extract_rank(0)
+
+def main():
+    extract_rank()
+
+if __name__== '__main__':
+    main()
