@@ -6,7 +6,12 @@ import re
 from settings import getToken
 
 slack = WebClient(getToken())
-driver = webdriver.Chrome("chromedriver")
+
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+
+driver = webdriver.Chrome("chromedriver",options=options)
 driver.implicitly_wait(3)
 
 def send_slack(channel_name,blocks):
@@ -64,5 +69,7 @@ def extract_rank(type=0):
         }
         blocks.append(block)
     send_slack("#musicchart",blocks=blocks)
+    driver.quit()
+
 
 extract_rank(0)
