@@ -13,3 +13,5 @@ Melon Music Rank Information Cralwer with
 - Settings - Secrets - Add a new Secret 메뉴로 들어갑니다.
 - WEBHOOKS라는 이름으로 Incomming Webhook 주소를 입력해 저장합니다.
 - 매일 아침 9시 10분 run.py 실행해 Slack으로 현재 실시간 음원 순위 정보를 전송합니다.
+
+<img width="732" alt="스크린샷 2020-06-26 오전 2 00 36" src="https://user-images.githubusercontent.com/30601503/85768722-47535180-b754-11ea-862d-cd022229ff0f.png">
