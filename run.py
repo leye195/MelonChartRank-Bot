@@ -10,7 +10,7 @@ from slack import WebhookClient
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
 options.add_argument("lang=ko_KR")
-options.add_argument('headless')
+
 options.add_argument('window-size=1920x1080')
 options.add_argument("disable-gpu")
 options.add_argument("--no-sandbox")
@@ -21,7 +21,7 @@ driver.implicitly_wait(3)
 
 def send_slack(blocks):
     payload,url={"blocks":blocks[:21]},getWebHooks()
-    print(url)
+    #print(url)
     requests.post(url=url,data=json.dumps(payload),headers={"Content-Type":"application-json"})
     #slack.chat_postMessage(channel=channel_name,blocks=blocks[:21])
 def extract_rank(type=0):
@@ -33,7 +33,7 @@ def extract_rank(type=0):
     soup = BeautifulSoup(html,"html.parser")
     #real_conts > div.multi_row > div.calendar_prid > span.yyyymmdd > span
     if(type==0):
-        date = soup.select_one("#real_conts > div.multi_row > div.calendar_prid > span.yyyymmdd > span").get_text().strip()
+        date = soup.select_one("#conts > div.multi_row > div.calendar_prid.mt12 > span.yyyymmdd").get_text().strip()
         title = f"{date} 실시간 음원 순위 알림"
     '''elif(type==1):
         date = soup.select_one("#conts > div.calendar_prid > span.yyyymmdd > span").get_text().strip()
@@ -45,7 +45,7 @@ def extract_rank(type=0):
         elif(type==3):
             title = f"{date} 월간 음원 순위 알림"'''
     blocks,block=[],dict()
-    chart = soup.select("#lst50")
+    chart = soup.select("#frm > div > table > tbody > tr")
     blocks.append({
             "type": "section",
 			"text":{
@@ -54,14 +54,15 @@ def extract_rank(type=0):
             },
             "block_id": "text1"
     })
+    idx = 0
     for c in chart:
-        rank = c.select_one("#lst50 > td:nth-child(2) > div").get_text().strip()
-        image_url = c.select_one("#lst50 > td:nth-child(4) > div > a > img")["src"]
-        title = c.select_one("#lst50 > td:nth-child(6) > div > div > div.ellipsis.rank01 > span > a").get_text().strip()
-        singer = c.select_one("#lst50 > td:nth-child(6) > div > div > div.ellipsis.rank02 > a").get_text().strip()
-        album_info = c.select_one("#lst50 > td:nth-child(7) > div > div > div > a")
+        rank = idx+1
+        image_url = c.select_one("td:nth-child(2) > div > a > img")["src"]
+        title = c.select_one("td:nth-child(4) > div > div > div.ellipsis.rank01 > span > a").get_text().strip()
+        singer = c.select_one("td:nth-child(4) > div > div > div.ellipsis.rank02 > a").get_text().strip()
+        album_info = c.select_one("td:nth-child(5) > div > div > div > a")
         album_title,album_link = album_info.get_text().strip(),f"https://www.melon.com/album/detail.htm?albumId={re.search('[0-9]+',album_info['href']).group()}"
-        like = c.select_one("#lst50 > td:nth-child(8) > div > button > span.cnt").get_text().strip("")[5:]
+        like = c.select_one("td:nth-child(6) > div > button > span.cnt").get_text().strip("")[5:]
         block={
            "type":"section",
            "text":{
@@ -75,6 +76,7 @@ def extract_rank(type=0):
            }
         }
         blocks.append(block)
+        idx+=1
     send_slack(blocks)
     driver.quit()
 
