@@ -1,6 +1,6 @@
 # MelonRankChart - GithubActions with Python
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fleye195%2FMelonChartRank-Bot)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fleye195%2FMelonChartRank-Bot)](https://hits.seeyoufarm.com)<br/>
 Melon Music Rank Information Cralwer with
 음원 순위 차트 정보 Github Actions활용 Slack 봇 알림
 
